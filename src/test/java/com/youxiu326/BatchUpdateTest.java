@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +17,6 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BatchUpdateTest {
-
 
     @Autowired
     private TestUserMapper userMapper;
@@ -44,7 +42,6 @@ public class BatchUpdateTest {
         System.out.println("此次更新了:" + count);
         System.out.println("此次更新了:" + count);
     }
-
 
     /**
      * jdbc实现批量更新
