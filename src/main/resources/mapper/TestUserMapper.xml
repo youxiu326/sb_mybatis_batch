@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxiu326.dao.TestUserMapper">
+
+  <resultMap id="BaseResultMap" type="com.youxiu326.entity.TestUser">
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.youxiu326.entity.TestUser">
+    insert into test_user (user_name, create_date)
+    values (#{userName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.youxiu326.entity.TestUser">
+    insert into test_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 批量新增01 -->
+  <insert id="batchInsertList">
+    insert into test_user(user_name,create_date)
+    values
+    <foreach collection="userList" index="index" item="item" separator=",">
+      (#{item.userName},SYSDATE())
+    </foreach>
+  </insert>
+
+  <!-- 批量修改01 -->
+  <update id="batchUpdateList">
+    update test_user
+    <trim prefix="set" suffixOverrides=",">
+
+      <trim prefix="user_name =case" suffix="end,">
+        <foreach item="item" collection="userList">
+          when test_user.user_name = (#{item.userName})
+          then #{item.updateUserName}
+        </foreach>
+      </trim>
+
+    </trim>
+    where
+    <foreach item="item" collection="userList" separator="or">
+      (test_user.user_name = (#{item.userName}))
+    </foreach>
+
+  </update>
+
+
+</mapper>
